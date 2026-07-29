@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+  <ID>DEMO-2026-0042</ID>
+  <IssueDate>2026-07-29</IssueDate>
+  <DocumentCurrencyCode>RON</DocumentCurrencyCode>
+  <AccountingSupplierParty>
+    <Party><PartyTaxScheme><CompanyID>RO18472931</CompanyID></PartyTaxScheme></Party>
+  </AccountingSupplierParty>
+  <LegalMonetaryTotal><PayableAmount currencyID="RON">58310.00</PayableAmount></LegalMonetaryTotal>
+</Invoice>

@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!DOCTYPE invoice [<!ENTITY external SYSTEM "file:///synthetic-demo-secret">]>
+<Invoice><ID>&external;</ID></Invoice>

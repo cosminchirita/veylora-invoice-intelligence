@@ -1,0 +1,11 @@
+{
+  "invoiceId": "DEMO-2026-0042",
+  "supplier": {
+    "name": "Nova Logistic SRL",
+    "taxId": "RO18472931"
+  },
+  "issueDate": "2026-07-29",
+  "currency": "RON",
+  "totalMinor": 5831000,
+  "source": "SYNTHETIC_DEMO"
+}

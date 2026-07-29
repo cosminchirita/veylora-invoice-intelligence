@@ -1,0 +1,77 @@
+name: Bug report
+description: Report a reproducible problem in the demo.
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Factura Integrity. Do not include invoices, personal data, credentials, access tokens, or other confidential information. Security vulnerabilities must be reported according to `SECURITY.md`, not through a public issue.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This report contains no confidential data or security vulnerability details.
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect instead?
+      placeholder: Describe the problem and its impact.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Release, branch, or commit SHA where the issue occurs.
+      placeholder: v0.1.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Local development
+        - Hosted demo
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 128 on Windows 11
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized logs or screenshots
+      description: Remove personal, financial, authentication, and customer data before attaching evidence.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include anything else that may help reproduce or prioritize the issue.

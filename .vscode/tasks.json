@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Factura Integrity: development server",
+      "type": "shell",
+      "command": "pnpm dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Factura Integrity: quality gate",
+      "type": "shell",
+      "command": "pnpm check",
+      "problemMatcher": ["$tsc", "$eslint-stylish"],
+      "group": { "kind": "test", "isDefault": true }
+    }
+  ]
+}
