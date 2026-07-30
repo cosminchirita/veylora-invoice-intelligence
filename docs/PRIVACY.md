@@ -1,122 +1,121 @@
-# Privacy și protecția datelor
+# Privacy and data protection
 
-Acest document descrie principiile de privacy pentru Veylora Invoice Intelligence și diferențiază capabilitățile demo de cerințele unei implementări reale. Nu reprezintă consultanță juridică; operatorul trebuie să confirme obligațiile aplicabile împreună cu responsabilul cu protecția datelor și consilierii săi.
+This document describes the privacy principles for Veylora Invoice Intelligence and distinguishes demo capabilities from the requirements of a real implementation. It is not legal advice; the controller must confirm applicable obligations with its data protection officer and legal advisers.
 
-## Starea versiunii demonstrative
+## Demo status
 
-- folosește date fictive incluse în interfață;
-- nu are conectori reali ANAF/SPV, ERP sau bancari;
-- nu oferă persistență operațională pentru facturile importate;
-- starea și evenimentele create în interfață sunt temporare;
-- autentificarea site-ului de prezentare nu echivalează cu identitatea și autorizarea aplicației de producție;
-- nu trebuie utilizată pentru facturi reale, CNP-uri, IBAN-uri, contracte sau alte informații confidențiale.
+- uses synthetic data embedded in the interface;
+- has no live ANAF/SPV, ERP, or banking connectors;
+- provides no operational persistence for imported invoices;
+- state and events created in the interface are temporary;
+- authentication for the presentation site is not equivalent to production application identity and authorization;
+- must not be used with real invoices, national identifiers, IBANs, contracts, or other confidential information.
 
-## Roluri și responsabilități
+## Roles and responsibilities
 
-Într-o instalare pentru client, rolurile se stabilesc contractual:
+Roles are established contractually for each client deployment:
 
-- clientul este, de regulă, operatorul datelor pentru facturile și utilizatorii proprii;
-- furnizorul platformei poate fi persoană împuternicită și procesează numai instrucțiunile documentate;
-- furnizorii de hosting, observabilitate, OCR sau AI sunt sub-procesatori și trebuie listați, evaluați și contractați;
-- pentru sursele ANAF, ERP și bancare se documentează separat temeiul, scopul și responsabilitățile.
+- the client is generally the controller for its invoices and user data;
+- the platform provider may act as a processor and process only documented instructions;
+- hosting, observability, OCR, and AI providers are subprocessors and must be listed, assessed, and contracted;
+- the lawful basis, purpose, and responsibilities for ANAF, ERP, and banking sources are documented separately.
 
-Înaintea unui pilot sunt necesare inventarul prelucrărilor, acordul de prelucrare, lista sub-procesatorilor și, când riscul o impune, o evaluare DPIA.
+Before a pilot, the processing inventory, data-processing agreement, subprocessor list, and—where risk requires it—a data protection impact assessment (DPIA) must be completed.
 
-## Categorii de date
+## Data categories
 
-Datele pot include:
+Data may include:
 
-- identificatori fiscali și date comerciale ale furnizorilor;
-- nume, funcții și date de contact ale persoanelor autorizate;
-- numere de factură, linii, cantități, prețuri, TVA și termene;
-- IBAN și informații despre plăți;
-- comenzi, recepții și identificatori ERP;
-- mesaje și coduri de răspuns e-Factura;
-- decizii, comentarii, identitatea actorului și evenimente de audit;
-- metadate tehnice de securitate, precum IP, sesiune și ID de corelare.
+- supplier tax identifiers and commercial data;
+- names, roles, and contact details of authorized people;
+- invoice numbers, lines, quantities, prices, VAT, and due dates;
+- IBANs and payment information;
+- purchase orders, goods receipts, and ERP identifiers;
+- e-Invoice messages and response codes;
+- decisions, comments, actor identity, and audit events;
+- technical security metadata such as IP address, session, and correlation ID.
 
-Factura poate conține accidental date personale în câmpuri libere sau atașamente. Aceste câmpuri necesită controale suplimentare și nu trebuie trimise implicit către servicii AI.
+An invoice may accidentally contain personal data in free-text fields or attachments. These fields require additional controls and must not be sent to AI services by default.
 
-## Scop și minimizare
+## Purpose limitation and minimization
 
-Datele sunt prelucrate numai pentru ingestie, validare, reconciliere, detectarea abaterilor, administrarea cazurilor și audit. Principii obligatorii:
+Data is processed only for ingestion, validation, reconciliation, variance detection, case management, and audit. Mandatory principles:
 
-- se colectează numai câmpurile necesare fiecărui control;
-- documentul brut este separat de reprezentarea normalizată;
-- logurile nu conțin corpul facturii, tokenuri, certificate sau secrete;
-- datele pentru analytics sunt agregate sau pseudonimizate când este posibil;
-- mediile de dezvoltare și test folosesc date sintetice;
-- accesul suportului la datele clientului este temporar, justificat și auditat.
+- collect only the fields required for each control;
+- separate the raw document from its normalized representation;
+- exclude invoice bodies, tokens, certificates, and secrets from logs;
+- aggregate or pseudonymize analytics data where possible;
+- use synthetic data in development and test environments;
+- make support access to client data temporary, justified, and audited.
 
-## Retenție și ștergere
+## Retention and deletion
 
-Valoarea „7 ani” afișată în demo este doar un exemplu de politică, nu o regulă juridică universală. În producție, clientul aprobă o matrice de retenție pe categorii și jurisdicții.
+The “7 years” value displayed in the demo is an example policy, not a universal legal rule. In production, the client approves a retention matrix by category and jurisdiction.
 
-| Categorie | Politică de pornire propusă | Observații |
+| Category | Proposed starting policy | Notes |
 | --- | --- | --- |
-| document fiscal original | conform obligației legale și politicii clientului | păstrare WORM/immutability dacă este necesară |
-| date normalizate și reconciliere | corelată cu documentul și perioada de contestare | poate fi redusă după închiderea cazului |
-| cazuri și decizii | conform controalelor financiar-contabile și auditului | include motivul și actorul |
-| loguri operaționale | 30–90 zile | fără conținut financiar sensibil |
-| loguri de securitate | 180–365 zile, bazat pe risc | acces limitat echipei de securitate |
-| fișiere temporare/OCR | minute sau ore | ștergere imediat după procesare validată |
-| backup-uri | fereastră definită contractual | expirare automată și restaurări auditate |
+| original fiscal document | applicable legal obligation and client policy | use WORM or immutable retention where required |
+| normalized data and reconciliation | aligned with the document and dispute period | may be reduced after case closure |
+| cases and decisions | applicable financial-control and audit requirements | includes reason and actor |
+| operational logs | 30–90 days | no sensitive financial content |
+| security logs | 180–365 days, risk-based | access restricted to the security team |
+| temporary/OCR files | minutes or hours | delete immediately after validated processing |
+| backups | contractually defined window | automatic expiry and audited restoration |
 
-Ștergerea trebuie să se propage în stocarea primară, indexuri, cache-uri și copii de siguranță conform unei ferestre documentate. O obligație de conservare legală suspendă ștergerea numai pentru obiectele și perioada necesare. Ștergerea și expirarea sunt evenimente auditate.
+Deletion must propagate through primary storage, indexes, caches, and backups within a documented window. A legal hold suspends deletion only for the necessary objects and period. Deletion and expiry are themselves audited events.
 
-## Drepturile persoanelor vizate
+## Data-subject rights
 
-Arhitectura de producție trebuie să permită căutarea controlată, exportul, rectificarea, restricționarea și ștergerea datelor personale, acolo unde obligațiile fiscale și temeiul legal permit. Solicitările sunt autentificate, aprobate și înregistrate; jurnalul de audit nu este rescris, ci poate păstra o referință minimă pseudonimizată către acțiunea efectuată.
+The production architecture must support controlled search, export, correction, restriction, and deletion of personal data where fiscal obligations and the lawful basis permit. Requests are authenticated, approved, and recorded. The audit log is not rewritten; it may retain a minimal pseudonymized reference to the action performed.
 
-## Securitate și acces
+## Security and access
 
-Cerințe minime pentru producție:
+Minimum production requirements:
 
-- SSO/OIDC cu MFA și politici de sesiune;
-- RBAC/ABAC și separarea atribuțiilor dintre operator, aprobator, auditor și administrator;
-- izolare strictă per organizație la nivel de API, date, cache și obiecte;
-- criptare TLS în tranzit și criptare la stocare cu chei gestionate;
-- secrete în secret manager, rotație și acces fără export;
-- protecție contra malware, XML extern, decompression bombs și fișiere poliglote;
-- URL-uri semnate pe termen scurt pentru documente;
-- rate limiting, protecție CSRF și verificări de autorizare pentru fiecare obiect;
-- mascarea datelor sensibile în interfață și exporturi;
-- copii de siguranță criptate și teste periodice de restaurare.
+- SSO/OIDC with MFA and session policies;
+- RBAC/ABAC and separation of duties across operator, approver, auditor, and administrator roles;
+- strict organization-level isolation across APIs, data, caches, and objects;
+- TLS in transit and managed-key encryption at rest;
+- secret-manager storage, rotation, and non-exportable access;
+- protection against malware, XML external entities, decompression bombs, and polyglot files;
+- short-lived signed document URLs;
+- rate limiting, CSRF protection, and authorization checks for every object;
+- masking of sensitive data in the interface and exports;
+- encrypted backups and periodic restoration tests.
 
-## Izolare, rezidență și transferuri
+## Isolation, residency, and transfers
 
-Locația datelor, replica, backup-ul și serviciile de observabilitate trebuie stabilite înainte de onboarding. Transferurile în afara spațiului aprobat de client necesită un mecanism legal adecvat și evaluarea furnizorilor. Pentru clienții cu cerințe stricte se recomandă chei dedicate, separare logică verificată și opțiune de implementare regională.
+Data location, replication, backup, and observability services must be agreed before onboarding. Transfers outside the area approved by the client require an appropriate legal mechanism and provider assessment. Dedicated keys, verified logical separation, and regional deployment options are recommended for clients with strict requirements.
 
-## AI și utilizarea datelor
+## AI and data use
 
-- datele clientului nu sunt folosite la antrenarea modelelor generale fără acord explicit și bază legală;
-- trimiterea către un furnizor AI este dezactivată implicit până la evaluarea privacy și contractuală;
-- câmpurile sunt minimizate și pseudonimizate înainte de inferență;
-- prompturile și răspunsurile nu sunt păstrate mai mult decât este necesar;
-- un LLM nu primește tokenuri ANAF, credențiale ERP sau date bancare complete;
-- rezultatele generate sunt etichetate și nu înlocuiesc documentul sursă;
-- drepturile, retenția și ștergerea se aplică și datelor derivate.
+- client data is not used to train general models without explicit agreement and a lawful basis;
+- transfer to an AI provider is disabled by default until privacy and contractual assessment is complete;
+- fields are minimized and pseudonymized before inference;
+- prompts and responses are retained no longer than necessary;
+- an LLM never receives ANAF tokens, ERP credentials, or full banking data;
+- generated results are labelled and do not replace the source document;
+- rights, retention, and deletion requirements also apply to derived data.
 
-## Audit și transparență
+## Audit and transparency
 
-Un eveniment de audit de producție trebuie să conțină actorul, acțiunea, obiectul, momentul, motivul, rezultatul, versiunea politicii și ID-ul de corelare. Se evită includerea valorilor complete ale documentului. Accesul la jurnal și exporturile sunt la rândul lor auditate.
+A production audit event must contain the actor, action, object, time, reason, outcome, policy version, and correlation ID. Full document values are excluded. Access to the audit log and audit exports is also audited.
 
-Lanțul hash demonstrativ nu este suficient pentru non-repudiere. Pentru producție sunt necesare stocare append-only, semnare/HMAC cu chei rotite, marcaj temporal de încredere și verificări independente, în funcție de cerința clientului.
+The demo hash chain is insufficient for non-repudiation. Depending on client requirements, production requires append-only storage, signatures or HMAC with rotated keys, trusted timestamps, and independent verification.
 
-## Incidente și încălcări ale securității
+## Incidents and security breaches
 
-Planul operațional trebuie să includă detectare, clasificare, izolare, păstrarea probelor, evaluarea impactului, notificarea responsabililor și remedierea. Termenele de notificare se stabilesc conform rolurilor contractuale și legislației aplicabile. Exercițiile periodice trebuie să includă acces între clienți, scurgerea unui export și compromiterea unui conector.
+The operating plan must cover detection, classification, containment, evidence preservation, impact assessment, stakeholder notification, and remediation. Notification deadlines are defined according to contractual roles and applicable law. Exercises should include cross-tenant access, export leakage, and connector compromise.
 
-## Checklist înainte de date reale
+## Checklist before using real data
 
-- [ ] clasificarea datelor și evidența activităților de prelucrare sunt aprobate;
-- [ ] temeiurile, acordul de prelucrare și sub-procesatorii sunt documentați;
-- [ ] DPIA a fost evaluată și efectuată dacă este necesar;
-- [ ] rezidența, transferurile și cheia de criptare sunt convenite;
-- [ ] SSO, MFA, rolurile și separarea atribuțiilor sunt testate;
-- [ ] matricea de retenție și ștergerea end-to-end sunt validate;
-- [ ] logurile și observabilitatea au fost verificate pentru date sensibile;
-- [ ] conectorii pornesc read-only și folosesc credențiale cu privilegii minime;
-- [ ] procedura de incident și persoanele de contact sunt stabilite;
-- [ ] setul pilot este minimizat și aprobat de client.
-
+- [ ] data classification and the processing-activity record are approved;
+- [ ] lawful bases, the data-processing agreement, and subprocessors are documented;
+- [ ] a DPIA has been assessed and completed where required;
+- [ ] residency, transfers, and encryption-key arrangements are agreed;
+- [ ] SSO, MFA, roles, and separation of duties are tested;
+- [ ] the retention matrix and end-to-end deletion are validated;
+- [ ] logs and observability have been reviewed for sensitive data;
+- [ ] connectors begin read-only and use least-privilege credentials;
+- [ ] incident procedures and contacts are established;
+- [ ] the pilot dataset is minimized and approved by the client.

@@ -1,176 +1,175 @@
-# Roadmap către producție
+# Roadmap to production
 
-Roadmap-ul transformă demo-ul într-o platformă financiară controlată, observabilă și auditabilă. Ordinea este intenționată: fundația de securitate și date precede automatizarea avansată. Termenele sunt estimative și se stabilesc după workshop-ul tehnic cu primul client.
+This roadmap evolves the demo into a controlled, observable, and auditable financial platform. The sequence is intentional: security and data foundations precede advanced automation. Timelines are estimates and must be agreed after a technical workshop with the first client.
 
-## Starea curentă — v0.1 demo
+## Current state — v0.1 demo
 
-Disponibil:
+Available:
 
-- interfață responsive pentru dashboard, facturi, reconciliere, cazuri, e-Factura, furnizori, analytics, audit și integrări;
-- motor demonstrativ de potrivire deterministă;
-- comparație explicabilă a două documente;
-- import local XML/CSV/JSON, limită de 5 MB și control de bază anti-XXE;
-- confirmare umană pentru aprobarea unei facturi cu risc critic;
-- evenimente de audit temporare și export CSV protejat contra formula injection;
-- teste automate pentru funcțiile centrale și randarea aplicației.
+- responsive interface for the dashboard, invoices, reconciliation, cases, e-Invoice, suppliers, analytics, audit, and integrations;
+- deterministic demonstration matching engine;
+- explainable comparison of two documents;
+- local XML, CSV, and JSON import with a 5 MB limit and basic anti-XXE protection;
+- human confirmation before approving a critical-risk invoice;
+- temporary audit events and CSV export protected against formula injection;
+- automated tests for core functions and application rendering.
 
-Nu este disponibil încă:
+Not yet available:
 
-- autentificare și autorizare în aplicație;
-- persistență multi-tenant;
-- conector real ANAF/SPV, ERP sau bancar;
-- procesare asincronă, cozi, retry și idempotency distribuită;
-- management de secrete, criptare operațională și backup;
-- model ML antrenat și validat;
-- SLA/SLO, observabilitate și proceduri de incident de producție.
+- application-level authentication and authorization;
+- multi-tenant persistence;
+- live ANAF/SPV, ERP, or banking connectors;
+- asynchronous processing, queues, retry handling, and distributed idempotency;
+- secret management, operational encryption, and backups;
+- a trained and validated ML model;
+- production SLA/SLO commitments, observability, and incident procedures.
 
-## Faza 1 — Fundație de pilot
+## Phase 1 — Pilot foundation
 
-**Obiectiv:** un mediu izolat în care clientul poate evalua fluxul cu un set minim și controlat de date.
+**Objective:** an isolated environment in which the client can evaluate the workflow with a minimal, controlled dataset.
 
-- arhitectură multi-tenant cu `tenant_id` impus la fiecare nivel;
-- PostgreSQL administrat, migrații și schemă pentru facturi, documente, cazuri, decizii și evenimente;
-- stocare de obiecte criptată pentru documentele originale;
-- SSO/OIDC, MFA, RBAC și roluri `Operator`, `Aprobator`, `Auditor`, `Administrator`;
-- separarea atribuțiilor pentru cazurile cu impact mare;
-- secret manager, rotație și inventarul credențialelor;
-- API versionat, validare strictă, limite de dimensiune și scanare malware;
-- jurnal append-only persistent cu ID de corelare;
-- CI/CD cu medii separate, scanări de dependențe și policy gates;
-- backup, restaurare testată și procedură de ștergere;
-- set de date sintetice și seed reproductibil pentru demonstrații.
+- multi-tenant architecture with `tenant_id` enforced at every layer;
+- managed PostgreSQL, migrations, and schemas for invoices, documents, cases, decisions, and events;
+- encrypted object storage for original documents;
+- SSO/OIDC, MFA, RBAC, and `Operator`, `Approver`, `Auditor`, and `Administrator` roles;
+- separation of duties for high-impact cases;
+- secret manager, rotation, and credential inventory;
+- versioned API, strict validation, size limits, and malware scanning;
+- persistent append-only audit log with correlation IDs;
+- CI/CD with separated environments, dependency scans, and policy gates;
+- backups, tested restoration, and a deletion procedure;
+- synthetic dataset and reproducible seed for demonstrations.
 
-**Criteriu de ieșire:** testele de izolare, autorizare, backup/restore și threat model sunt aprobate; nu există acces write către sistemele clientului.
+**Exit criterion:** isolation, authorization, backup/restore tests, and the threat model are approved; there is no write access to client systems.
 
-## Faza 2 — Conector ANAF/SPV și e-Factura
+## Phase 2 — ANAF/SPV and e-Invoice connector
 
-**Obiectiv:** ingestie reală, read-only, rezilientă și trasabilă a documentelor și răspunsurilor.
+**Objective:** live, read-only, resilient, and traceable ingestion of documents and responses.
 
-- clarificarea contractului tehnic și a fluxului de autorizare aplicabil;
-- certificate/tokenuri gestionate în secret manager, fără expunere în loguri;
-- sincronizare incrementală cu watermark și reconciliere periodică completă;
-- idempotency per identificator extern și hash de document;
-- coadă de procesare, retry cu backoff, dead-letter queue și replay controlat;
-- stocarea payloadului original, a răspunsului și a metadatelor de proveniență;
-- maparea codurilor de eroare și runbook pentru indisponibilitate;
-- limitarea traficului și protejarea împotriva duplicatelor/reordonării;
-- monitorizare pentru întârzierea sincronizării, erori și expirarea credențialelor.
+- clarify the applicable technical contract and authorization flow;
+- manage certificates and tokens in a secret manager without log exposure;
+- incremental synchronization with a watermark plus periodic full reconciliation;
+- idempotency by external identifier and document hash;
+- processing queue, retry with backoff, dead-letter queue, and controlled replay;
+- store original payloads, responses, and provenance metadata;
+- map error codes and provide an outage runbook;
+- apply traffic limits and protection against duplicates and reordering;
+- monitor synchronization delay, errors, and credential expiry.
 
-**Criteriu de ieșire:** importul este comparat cu SPV pe o perioadă pilot, fără pierderi sau duplicate, iar fiecare document este trasabil până la răspunsul sursă.
+**Exit criterion:** imports are compared with SPV over a pilot period without loss or duplication, and every document is traceable to its source response.
 
-## Faza 3 — Conectori ERP
+## Phase 3 — ERP connectors
 
-**Obiectiv:** reconcilierea factură–comandă–recepție într-un flux read-only.
+**Objective:** read-only invoice–purchase-order–goods-receipt reconciliation.
 
-- contract canonic pentru furnizor, comandă, recepție, factură, centru de cost și stare;
-- adaptor inițial pentru ERP-ul clientului, de exemplu SAP S/4HANA sau SmartBill;
-- mapări versionate și reguli pentru monedă, TVA, toleranțe, unități și facturi storno;
-- controlul latenței și al datelor lipsă;
-- reconciliere în trei pași și explicații la nivel de câmp/linie;
-- reprocessare deterministă după corectarea mapării;
-- portal de configurare cu four-eyes approval pentru pragurile materiale.
+- canonical contract for suppliers, orders, receipts, invoices, cost centers, and statuses;
+- initial adapter for the client's ERP, such as SAP S/4HANA or SmartBill;
+- versioned mappings and rules for currency, VAT, tolerances, units, and credit notes;
+- controls for latency and missing data;
+- three-way matching with field- and line-level explanations;
+- deterministic reprocessing after mapping corrections;
+- configuration portal with four-eyes approval for material thresholds.
 
-**Criteriu de ieșire:** rezultatele pe eșantionul etichetat ating pragurile convenite, iar excepțiile pot fi explicate și reproduse.
+**Exit criterion:** results on the labelled sample meet agreed thresholds, and exceptions are explainable and reproducible.
 
-## Faza 4 — Date bancare și reconcilierea plăților
+## Phase 4 — Banking data and payment reconciliation
 
-**Obiectiv:** potrivirea plăților fără inițierea lor.
+**Objective:** match payments without initiating them.
 
-- alegerea canalului: Open Banking, API bancar, MT940/camt.053 sau import controlat;
-- consimțământ, expirarea autorizării și privilegii read-only;
-- tokenizare/mascare IBAN și minimizarea descrierilor tranzacțiilor;
-- idempotency și de-duplicare pentru tranzacții;
-- reconciliere unu-la-unu, unu-la-mai-multe, plăți parțiale și comisioane;
-- alertă pentru schimbarea contului furnizorului, cu verificare separată;
-- controale împotriva fraudelor de tip business email compromise;
-- separare strictă față de orice serviciu de inițiere a plății.
+- select a channel: Open Banking, bank API, MT940/camt.053, or controlled import;
+- manage consent, authorization expiry, and read-only privileges;
+- tokenize or mask IBANs and minimize transaction descriptions;
+- apply idempotency and transaction deduplication;
+- support one-to-one, one-to-many, partial-payment, and fee reconciliation;
+- alert on supplier account changes with separate verification;
+- add controls against business email compromise;
+- enforce strict separation from any payment-initiation service.
 
-**Criteriu de ieșire:** acoperirea și fals-pozitivele sunt măsurate pe un ciclu financiar complet; aplicația nu poate iniția transferuri.
+**Exit criterion:** coverage and false positives are measured over a complete financial cycle; the application cannot initiate transfers.
 
-## Faza 5 — AI/ML validat
+## Phase 5 — Validated AI/ML
 
-**Obiectiv:** reducerea trierei manuale fără a elimina controlul uman.
+**Objective:** reduce manual triage without removing human control.
 
-- registru de reguli și modele cu fișe de model;
-- dataset etichetat, guvernat și separat pe perioade/furnizori;
-- detector de anomalii pentru sumă, frecvență, cont și comportament;
-- similaritate semantică a liniilor numai după validarea deterministă a valorilor;
-- calibrarea încrederii și mecanism de abstinență;
-- explicații bazate pe contribuțiile caracteristicilor și documentele sursă;
-- evaluare pe segmente, shadow mode și comparație champion/challenger;
-- monitorizarea driftului și rollback per versiune;
-- feedback uman folosit numai după verificare și control de calitate.
+- rule and model registry with model cards;
+- governed labelled dataset separated by period and supplier;
+- anomaly detector for amount, frequency, account, and behavior;
+- semantic line similarity only after deterministic value validation;
+- confidence calibration and an abstention mechanism;
+- explanations grounded in feature contributions and source documents;
+- segment-level evaluation, shadow mode, and champion/challenger comparison;
+- drift monitoring and per-version rollback;
+- human feedback used only after verification and quality control.
 
-**Criteriu de ieșire:** metricile și pragurile sunt aprobate de controlul financiar, privacy și securitate, iar acțiunile cu impact rămân human-in-the-loop.
+**Exit criterion:** metrics and thresholds are approved by financial control, privacy, and security owners, while consequential actions remain human-in-the-loop.
 
-## Faza 6 — Hardening și disponibilitate generală
+## Phase 6 — Hardening and general availability
 
-**Obiectiv:** operare predictibilă pentru mai mulți clienți și volume reale.
+**Objective:** predictable operation for multiple clients and production volumes.
 
-- SLO pentru disponibilitate, latență, prospețimea datelor și rata de procesare;
-- dashboard-uri, alerte acționabile, tracing și metrici per conector;
-- autoscaling, backpressure și limite per tenant;
-- teste de încărcare, chaos testing și disaster recovery;
-- RPO/RTO contractuale și exerciții de restaurare;
-- penetration test independent și remedierea constatărilor;
-- proceduri de incident, rotație on-call și comunicare către client;
-- audit periodic de acces, secrete, retenție și sub-procesatori;
-- documentație operațională, training și criterii de onboarding/offboarding.
+- SLOs for availability, latency, data freshness, and processing rate;
+- dashboards, actionable alerts, tracing, and connector-level metrics;
+- autoscaling, backpressure, and tenant-level limits;
+- load tests, chaos testing, and disaster recovery;
+- contractual RPO/RTO targets and restoration exercises;
+- independent penetration testing and finding remediation;
+- incident procedures, on-call rotation, and client communication;
+- periodic access, secret, retention, and subprocessor reviews;
+- operational documentation, training, and onboarding/offboarding criteria.
 
-**Criteriu de ieșire:** SLO-urile sunt demonstrate într-o perioadă de stabilitate, testele de securitate sunt închise și runbook-urile sunt exersate.
+**Exit criterion:** SLOs are demonstrated during a stability period, security findings are closed, and runbooks have been exercised.
 
-## Backlog transversal prioritar
+## Priority cross-cutting backlog
 
-### Securitate
+### Security
 
-- threat model pentru upload, conectori, multi-tenancy și export;
-- verificare antivirus, content sniffing și arhive comprimate;
-- autorizare la nivel de obiect și teste contra IDOR;
-- CSP, CSRF, rate limiting și protecția sesiunii;
-- SBOM, semnarea artefactelor și provenance pentru build.
+- threat model for uploads, connectors, multi-tenancy, and exports;
+- antivirus checks, content sniffing, and compressed-archive controls;
+- object-level authorization and IDOR testing;
+- CSP, CSRF, rate limiting, and session protection;
+- SBOM, artifact signing, and build provenance.
 
-### Privacy și conformitate
+### Privacy and compliance
 
-- evidența prelucrărilor și DPIA;
-- matrice de retenție configurabilă, cu legal hold;
-- rezidență și sub-procesatori per client;
-- export/ștergere și auditarea solicitărilor;
-- politici clare pentru utilizarea datelor cu servicii AI.
+- processing-activity record and DPIA;
+- configurable retention matrix with legal hold;
+- residency and subprocessors by client;
+- export/deletion workflows and request auditing;
+- clear policies for using data with AI services.
 
-### Auditabilitate
+### Auditability
 
-- evenimente imuabile și versionate;
-- semnare/HMAC, rotația cheilor și verificare periodică;
-- snapshot al regulilor și datelor folosite la fiecare decizie;
-- export semnat și verificator independent;
-- fus orar, sincronizare a ceasului și ordine cauzală documentată.
+- immutable, versioned events;
+- signatures or HMAC, key rotation, and periodic verification;
+- snapshots of rules and data used for each decision;
+- signed exports and an independent verifier;
+- documented time zones, clock synchronization, and causal ordering.
 
-### Experiență de produs
+### Product experience
 
-- onboarding ghidat și date demo separate;
-- filtre salvate, căutare și cozi pe roluri;
-- comparație de documente accesibilă și imprimabilă;
-- justificări structurate pentru decizie;
-- notificări fără expunerea datelor sensibile;
-- accesibilitate WCAG 2.2 AA și testare cu utilizatori financiari.
+- guided onboarding with separated demo data;
+- saved filters, search, and role-specific queues;
+- accessible and printable document comparison;
+- structured decision justifications;
+- notifications that reveal no sensitive data;
+- WCAG 2.2 AA accessibility and testing with finance users.
 
-## Indicatori de succes pentru pilot
+## Pilot success indicators
 
-- timpul median până la prima analiză și până la închiderea cazului;
-- procentul facturilor reconciliate fără conflict;
-- precision/recall și rata de abstinență pentru fiecare tip de alertă;
-- valoarea duplicatelor confirmate, fără a o confunda cu economii garantate;
-- rata de corectare a recomandărilor de către operatori;
-- prospețimea datelor și numărul de erori de conector;
-- procentul deciziilor cu dovezi și justificare completă;
-- incidente de izolare sau acces neautorizat: țintă zero.
+- median time to first review and case closure;
+- percentage of invoices reconciled without conflict;
+- precision, recall, and abstention rate for each alert type;
+- value of confirmed duplicates without presenting it as guaranteed savings;
+- operator correction rate for recommendations;
+- data freshness and connector error count;
+- percentage of decisions with complete evidence and justification;
+- isolation or unauthorized-access incidents: target zero.
 
-## Principii de lansare
+## Release principles
 
-1. date sintetice înaintea datelor reale;
-2. conector read-only înaintea oricărui write-back;
-3. shadow mode înaintea automatizării;
-4. pilot cu un singur flux și volum limitat înainte de extindere;
-5. rollback testat înaintea promovării;
-6. afirmații comerciale susținute numai de metrici măsurate în pilot.
-
+1. synthetic data before real data;
+2. read-only connectors before any write-back;
+3. shadow mode before automation;
+4. one limited-volume workflow before expansion;
+5. tested rollback before promotion;
+6. commercial claims supported only by measured pilot metrics.
