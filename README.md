@@ -1,41 +1,43 @@
 # Factura Integrity
 
-**AI Invoice Integrity & E-Invoicing Reconciliation Platform** — un demo interactiv, auditabil și orientat spre privacy pentru detectarea duplicatelor, reconcilierea factură–ERP–plată și trierea riscului operațional.
+**AI Invoice Integrity & E-Invoicing Reconciliation Platform** — an interactive, auditable, privacy-conscious demo for duplicate detection, invoice–ERP–payment reconciliation, and operational risk triage.
 
-> Stadiu: `1.0.0-demo.1`. Repository-ul folosește exclusiv date sintetice. Conectorii ANAF/SPV, ERP și bancari sunt simulați și nu trimit date către sisteme externe.
+> Status: `1.0.0-demo.1`. This repository uses synthetic data only. ANAF/SPV, ERP, and banking connectors are simulated and do not send data to external systems.
 
 ![Factura Integrity dashboard](docs/assets/dashboard.png)
 
-## De ce există
+## Why it exists
 
-Echipele financiare operează în sisteme fragmentate și investighează manual facturi duplicate, diferențe față de comenzi și erori de transmitere. Factura Integrity oferă o singură coadă de decizie cu dovezi verificabile, scoruri explicabile și controale human-in-the-loop.
+Finance teams operate across fragmented systems and manually investigate duplicate invoices, purchase-order discrepancies, and transmission failures. Factura Integrity provides a single decision queue with verifiable evidence, explainable scores, and human-in-the-loop controls.
 
-## Demo-ul include
+## Demo capabilities
 
-- dashboard operațional responsive, în limba română;
-- registru de facturi, cazuri, furnizori, e-Factura, analize și integrări;
-- reconciliere deterministă și scor de risc explicabil `rules-v1.8`;
-- comparație alăturată pentru un posibil duplicat;
-- import local XML/CSV/JSON, limită de 5 MB și protecție anti-XXE;
-- aprobare cu verificare umană obligatorie pentru risc critic;
-- evenimente SHA-256 și export CSV protejat contra formula injection;
-- teste unitare, verificări de randare, CI, CodeQL și Dependabot.
+- responsive operational dashboard with a Romanian-language product interface;
+- invoice registry, cases, suppliers, e-Invoicing, analytics, and integrations;
+- deterministic reconciliation and explainable `rules-v1.8` risk scoring;
+- side-by-side comparison for suspected duplicate invoices;
+- local XML/CSV/JSON import with a 5 MB limit and anti-XXE protection;
+- mandatory human verification before approving critical-risk invoices;
+- SHA-256 audit events and CSV export protected against formula injection;
+- unit tests, rendered-output tests, CI, CodeQL, and Dependabot.
 
-![Comparație documente](docs/assets/document-comparison.png)
+![Document comparison](docs/assets/document-comparison.png)
 
-## Pornire rapidă în VS Code
+## Quick start in VS Code
 
-Cerințe: Node.js 22 și pnpm 10.
+Requirements: Node.js 22 or newer and pnpm 10.
 
 ```bash
-git clone <URL-UL-REPOSITORY-ULUI>
+git clone <YOUR-REPOSITORY-URL>
 cd ai-invoice-integrity-platform
 corepack enable
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Deschide `http://localhost:3000`. Pentru VS Code, rulează task-ul **Factura Integrity: development server** sau comanda de mai sus. Demo-ul nu cere conturi, chei API ori baze de date.
+Open `http://localhost:3000`. In VS Code, run the **Factura Integrity: development server** task or use the command above. The demo requires no accounts, API keys, or databases.
+
+On Windows PowerShell, if script execution is restricted, use `pnpm.cmd` instead of `pnpm`.
 
 ## Quality gate
 
@@ -43,7 +45,7 @@ Deschide `http://localhost:3000`. Pentru VS Code, rulează task-ul **Factura Int
 pnpm check
 ```
 
-Comanda rulează type-check, lint, teste unitare, build, testul rezultatului randat și verificarea fixture-urilor demo. Comenzile pot fi executate și separat:
+This command runs type-checking, linting, unit tests, a production build, rendered-output tests, and demo fixture verification. Each check can also be executed separately:
 
 ```bash
 pnpm typecheck
@@ -51,55 +53,60 @@ pnpm lint
 pnpm test:unit
 pnpm test:render
 pnpm verify:demo
+pnpm audit --prod
 ```
 
-## Arhitectură
+## Architecture
 
 ```text
 Browser / React UI
        │
-       ├── date sintetice tipizate
-       └── motor determinist
-             ├── validare upload
-             ├── reconciliere & risc explicabil
-             ├── protecție export CSV
-             └── hash SHA-256 pentru audit
+       ├── typed synthetic data
+       └── deterministic integrity engine
+             ├── secure upload validation
+             ├── explainable reconciliation and risk scoring
+             ├── CSV export protection
+             └── SHA-256 audit hashing
 ```
 
-Demo-ul este deliberat self-contained și păstrează starea în browser. Arhitectura țintă separă ingestia, normalizarea, reconcilierea, cazurile și jurnalul append-only prin contracte idempotente și un outbox tranzacțional. Vezi [arhitectura](docs/ARCHITECTURE.md), [modelul de domeniu](docs/DOMAIN_MODEL.md) și [ADR-ul principal](docs/ADR/0001-modular-demo-architecture.md).
+The demo is deliberately self-contained and keeps state in the browser. The target production architecture separates ingestion, normalization, reconciliation, case management, and append-only auditing through idempotent contracts and a transactional outbox. See [Architecture](docs/ARCHITECTURE.md), [Domain Model](docs/DOMAIN_MODEL.md), and the [primary ADR](docs/ADR/0001-modular-demo-architecture.md).
 
-## Scenariu de prezentare
+## Demo walkthrough
 
-Ghidul complet de 5–7 minute este în [docs/DEMO_GUIDE.md](docs/DEMO_GUIDE.md). Fluxul principal:
+The complete 5–7 minute walkthrough is available in [docs/DEMO_GUIDE.md](docs/DEMO_GUIDE.md). The primary flow is:
 
-1. Deschide cazul critic `NVL-7712`.
-2. Inspectează dovezile și apasă **Compară documentele**.
-3. Închide comparația, confirmă verificarea umană și aprobă factura.
-4. Încarcă un fixture din `samples/`.
-5. Exportă jurnalul de audit.
+1. Open the critical `NVL-7712` case.
+2. Inspect the evidence and open the document comparison.
+3. Close the comparison, confirm the human verification, and approve the invoice.
+4. Upload a fixture from `samples/`.
+5. Export the audit trail.
 
-## Structură
+## Repository structure
 
 ```text
-app/          interfața și layout-ul aplicației
-lib/          motorul de integritate și datele demonstrative
-tests/        teste unitare și verificări ale build-ului
-samples/      facturi și ledger demonstrative, inclusiv fixture negativ
-docs/         arhitectură, privacy, AI governance, demo și roadmap
-.github/      CI, CodeQL, Dependabot și șabloane de colaborare
-.vscode/      task-uri și recomandări pentru dezvoltare
+app/          application UI and layout
+lib/          integrity engine and synthetic demo data
+tests/        unit and rendered-build tests
+samples/      synthetic invoice and ERP fixtures, including a negative fixture
+docs/         architecture, privacy, AI governance, demo, and roadmap
+.github/      CI, CodeQL, Dependabot, and collaboration templates
+.vscode/      development tasks and editor recommendations
 ```
 
-## Securitate, privacy și AI
+## Security, privacy, and responsible AI
 
-- Nu încărca date reale sau credențiale în demo.
-- Scorul asistă operatorul; nu produce decizii financiare autonome.
-- `confidence`, `risk` și `severity` au semnificații distincte și sunt documentate.
-- Pentru vulnerabilități, urmează [SECURITY.md](SECURITY.md), nu deschide un issue public.
-- Detalii: [AI governance](docs/AI_GOVERNANCE.md) și [privacy](docs/PRIVACY.md).
+- Do not upload real financial data or credentials to the demo.
+- Risk scores assist operators; they do not make autonomous financial decisions.
+- `confidence`, `risk`, and `severity` have distinct, documented meanings.
+- To report a vulnerability, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
+- See [AI Governance](docs/AI_GOVERNANCE.md) and [Privacy](docs/PRIVACY.md) for further details.
 
-Integrarea de producție necesită autentificare organizațională, autorizare pe roluri, secret manager, persistență, retenție, DPIA, contracte reale cu ANAF/ERP/banking, observabilitate și testare de reziliență. Aceste etape sunt în [roadmap](docs/ROADMAP.md).
+A production deployment requires organizational authentication, role-based authorization, secrets management, persistence, retention controls, a DPIA, live ANAF/ERP/banking contracts, observability, and resilience testing. These stages are described in the [roadmap](docs/ROADMAP.md).
 
-## Contribuții și licență
+## Demo and production boundary
 
-Vezi [CONTRIBUTING.md](CONTRIBUTING.md) și [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Codul este disponibil sub licența [MIT](LICENSE).
+This repository is a presentation-ready product demo, not a production financial system. All organizations, invoices, identifiers, scores, and integration results are synthetic. The interface labels simulated connectors explicitly and performs no external financial transactions.
+
+## Contributing and license
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). The project is available under the [MIT License](LICENSE).
