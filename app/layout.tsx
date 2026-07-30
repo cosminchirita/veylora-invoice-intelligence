@@ -6,8 +6,8 @@ import "./globals.css";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const title = "Veylora Invoice Intelligence — Control și reconciliere e-Factura";
-const description = "Platformă pentru integritatea facturilor, reconciliere explicabilă și auditabilitate e-Factura.";
+const title = "Veylora Invoice Intelligence — Explainable Invoice Control";
+const description = "AI-assisted invoice integrity, explainable reconciliation and auditable e-invoicing workflows for European finance teams.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const incoming = await headers();
@@ -18,14 +18,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(origin), title, description,
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-    openGraph: { title, description, type: "website", locale: "ro_RO", images: [{ url: image, width: 1200, height: 630, alt: "Veylora Invoice Intelligence" }] },
+    openGraph: { title, description, type: "website", locale: "en_GB", alternateLocale: ["ro_RO", "de_DE", "fr_FR"], images: [{ url: image, width: 1200, height: 630, alt: "Veylora Invoice Intelligence" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ro">
+    <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
     </html>
   );

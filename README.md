@@ -12,7 +12,7 @@ Finance teams operate across fragmented systems and manually investigate duplica
 
 ## Demo capabilities
 
-- responsive operational dashboard with a Romanian-language product interface;
+- responsive English-first interface with persistent language switching for English, Romanian, German and French;
 - invoice registry, cases, suppliers, e-Invoicing, analytics, and integrations;
 - deterministic reconciliation and explainable `rules-v1.8` risk scoring;
 - side-by-side comparison for suspected duplicate invoices;
@@ -56,6 +56,14 @@ pnpm verify:demo
 pnpm audit --prod
 ```
 
+`verify:demo` also checks that all interface messages used by the application have explicit German and French translations. English is the deterministic fallback language.
+
+## Languages
+
+The application starts in English and offers `English`, `Română`, `Deutsch`, and `Français` from the selector in the top bar. The preference is stored only in the browser under `veylora.locale`; no language or profile data is sent externally. Currency, percentages, event counts, dates, accessibility labels, validation feedback, and audit exports follow the selected interface locale.
+
+Translation resources and product-domain mappings live in `lib/i18n.ts`. See [Localization](docs/LOCALIZATION.md) for the extension and verification workflow.
+
 ## Architecture
 
 ```text
@@ -85,7 +93,7 @@ The complete 5–7 minute walkthrough is available in [docs/DEMO_GUIDE.md](docs/
 
 ```text
 app/          application UI and layout
-lib/          integrity engine and synthetic demo data
+lib/          integrity engine, localization resources, and synthetic demo data
 tests/        unit and rendered-build tests
 samples/      synthetic invoice and ERP fixtures, including a negative fixture
 docs/         architecture, privacy, AI governance, demo, and roadmap

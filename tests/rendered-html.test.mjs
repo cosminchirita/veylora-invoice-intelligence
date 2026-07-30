@@ -19,8 +19,9 @@ test("server-renders Veylora Invoice Intelligence", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /Veylora Invoice Intelligence/);
-  assert.match(html, /Control și reconciliere/);
-  assert.match(html, /Scor de integritate/);
+  assert.match(html, /Explainable Invoice Control/);
+  assert.match(html, /Integrity score/);
+  assert.match(html, /aria-label="Language"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
@@ -29,5 +30,14 @@ test("document comparison is wired to an accessible dialog", async () => {
   assert.match(source, /className="compare-button" onClick=\{onCompare\}/);
   assert.match(source, /function DocumentComparisonModal/);
   assert.match(source, /aria-labelledby="comparison-title"/);
-  assert.match(source, /5 din 6 câmpuri-cheie sunt identice/);
+  assert.match(source, /5 of 6 key fields are identical/);
+});
+
+test("ships four European interface languages with English as the fallback", async () => {
+  const source = await readFile(new URL("../lib/i18n.ts", import.meta.url), "utf8");
+  assert.match(source, /SUPPORTED_LOCALES = \["en", "ro", "de", "fr"\]/);
+  assert.match(source, /Română/);
+  assert.match(source, /Deutsch/);
+  assert.match(source, /Français/);
+  assert.match(source, /translations\[locale\]\[source\] \?\? source/);
 });
