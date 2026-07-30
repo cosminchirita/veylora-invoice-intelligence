@@ -1,14 +1,14 @@
-# Factura Integrity
+# Veylora Invoice Intelligence
 
 **AI Invoice Integrity & E-Invoicing Reconciliation Platform** — an interactive, auditable, privacy-conscious demo for duplicate detection, invoice–ERP–payment reconciliation, and operational risk triage.
 
 > Status: `1.0.0-demo.1`. This repository uses synthetic data only. ANAF/SPV, ERP, and banking connectors are simulated and do not send data to external systems.
 
-![Factura Integrity dashboard](docs/assets/dashboard.png)
+![Veylora Invoice Intelligence dashboard](docs/assets/dashboard.png)
 
 ## Why it exists
 
-Finance teams operate across fragmented systems and manually investigate duplicate invoices, purchase-order discrepancies, and transmission failures. Factura Integrity provides a single decision queue with verifiable evidence, explainable scores, and human-in-the-loop controls.
+Finance teams operate across fragmented systems and manually investigate duplicate invoices, purchase-order discrepancies, and transmission failures. Veylora Invoice Intelligence provides a single decision queue with verifiable evidence, explainable scores, and human-in-the-loop controls.
 
 ## Demo capabilities
 
@@ -35,7 +35,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open `http://localhost:3000`. In VS Code, run the **Factura Integrity: development server** task or use the command above. The demo requires no accounts, API keys, or databases.
+Open `http://localhost:3000`. In VS Code, run the **Veylora Invoice Intelligence: development server** task or use the command above. The demo requires no accounts, API keys, or databases.
 
 On Windows PowerShell, if script execution is restricted, use `pnpm.cmd` instead of `pnpm`.
 

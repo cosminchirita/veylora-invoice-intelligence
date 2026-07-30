@@ -13,12 +13,12 @@ async function render() {
   );
 }
 
-test("server-renders Factura Integrity", async () => {
+test("server-renders Veylora Invoice Intelligence", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /Factura Integrity/);
+  assert.match(html, /Veylora Invoice Intelligence/);
   assert.match(html, /Control și reconciliere/);
   assert.match(html, /Scor de integritate/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);

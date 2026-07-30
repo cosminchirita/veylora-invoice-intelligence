@@ -1,6 +1,6 @@
 # Security Policy
 
-Factura Integrity is currently a client-facing demonstration, not a production financial system. Use synthetic data only. Do not upload real invoices, personal data, banking information, authentication material, or confidential business records.
+Veylora Invoice Intelligence is currently a client-facing demonstration, not a production financial system. Use synthetic data only. Do not upload real invoices, personal data, banking information, authentication material, or confidential business records.
 
 ## Supported versions
 

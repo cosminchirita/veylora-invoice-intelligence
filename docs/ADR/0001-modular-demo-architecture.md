@@ -6,7 +6,7 @@
 
 ## Context
 
-Factura Integrity must be easy to clone, open in VS Code, run locally and demonstrate to a prospective client. The current scope is an interactive product demo with synthetic Romanian invoice data, deterministic examples and no real financial-system credentials.
+Veylora Invoice Intelligence must be easy to clone, open in VS Code, run locally and demonstrate to a prospective client. The current scope is an interactive product demo with synthetic Romanian invoice data, deterministic examples and no real financial-system credentials.
 
 At the same time, the product story includes sensitive invoice processing, ANAF/SPV and ERP integrations, bank/payment reconciliation, human approval and audit evidence. Implementing those concerns as if browser state were authoritative would create misleading security and reliability claims. Building a full distributed platform before validating the workflow would make the demo expensive and difficult to understand.
 

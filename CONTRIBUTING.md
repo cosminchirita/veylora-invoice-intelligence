@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping improve Factura Integrity. Contributions should keep the demo understandable, secure, auditable, and safe to run with synthetic data.
+Thank you for helping improve Veylora Invoice Intelligence. Contributions should keep the demo understandable, secure, auditable, and safe to run with synthetic data.
 
 ## Before you start
 

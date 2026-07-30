@@ -93,7 +93,7 @@ export function IntegrityPlatform() {
     const csv = rows.map((row) => row.map((cell) => `"${sanitizeSpreadsheetCell(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
     const url = URL.createObjectURL(new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" }));
     const anchor = document.createElement("a");
-    anchor.href = url; anchor.download = "factura-integrity-audit.csv"; anchor.click(); URL.revokeObjectURL(url);
+    anchor.href = url; anchor.download = "veylora-audit-evidence.csv"; anchor.click(); URL.revokeObjectURL(url);
     await appendAudit("Audit exportat", "AUDIT-2026-07-29", `${auditEvents.length} evenimente`);
     notify("Raportul de audit a fost generat cu protecție pentru formule CSV.");
   }
@@ -108,7 +108,7 @@ export function IntegrityPlatform() {
     <div className="platform-shell">
       <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
         <button className="sidebar-close" onClick={() => setMobileNav(false)} aria-label="Închide meniul">×</button>
-        <div className="brand"><span className="brand-mark">FI</span><span><strong>Factura</strong><small>INTEGRITY</small></span></div>
+        <div className="brand"><span className="brand-mark">VY</span><span><strong>Veylora</strong><small>INVOICE INTELLIGENCE</small></span></div>
         <div className="workspace-card"><span className="workspace-avatar">NR</span><span><strong>Nordic Retail</strong><small>România SRL</small></span><button aria-label="Schimbă organizația">⌄</button></div>
         <nav aria-label="Navigație principală">
           {navGroups.map((group, groupIndex) => <div className="nav-group" key={groupIndex}>{group.map((item) => <button key={item.id} className={activeView === item.id ? "active" : ""} onClick={() => selectView(item.id as View)}><span className="nav-icon">{item.icon}</span><span>{item.label}</span>{"badge" in item && <em>{item.badge}</em>}</button>)}</div>)}
@@ -205,7 +205,7 @@ function WorkspaceView({ view, invoices, auditEvents, onAnalyze, onUpload, onExp
   return <section className="workspace-page"><PageHeader title={titles[view][0]} subtitle={titles[view][1]} action={view === "invoices" ? <button className="primary-button" onClick={onUpload}>＋ Încarcă factură</button> : undefined} />{view === "efactura" && <div className="service-banner success"><span>✓</span><div><strong>Simulatorul SPV funcționează normal</strong><small>Date sintetice · nicio conexiune către ANAF în acest demo</small></div></div>}{view === "analytics" ? <AnalyticsView /> : view === "suppliers" ? <SupplierView onNotify={onNotify} /> : view === "settings" ? <SettingsView onNotify={onNotify} /> : <section className="panel workspace-panel"><div className="panel-head"><div><h2>{view === "cases" ? "Cazuri deschise" : view === "efactura" ? "Documente simulate" : "Registru facturi"}</h2><p>Date sintetice pentru demonstrație</p></div><button className="filter-button" onClick={() => onNotify("Filtrele demonstrative folosesc selecțiile Toate, Critice și Astăzi din dashboard.")}>≡ Filtre</button></div><InvoiceTable invoices={invoices} onAnalyze={onAnalyze} /></section>}</section>;
 }
 
-function PageHeader({ title, subtitle, action }: { title: string; subtitle: string; action?: React.ReactNode }) { return <div className="workspace-heading"><div><p className="eyebrow">FACTURA INTEGRITY</p><h1>{title}</h1><p>{subtitle}</p></div>{action}</div>; }
+function PageHeader({ title, subtitle, action }: { title: string; subtitle: string; action?: React.ReactNode }) { return <div className="workspace-heading"><div><p className="eyebrow">VEYLORA INVOICE INTELLIGENCE</p><h1>{title}</h1><p>{subtitle}</p></div>{action}</div>; }
 
 function AnalyticsView() { return <><div className="recon-summary"><div><small>Scor integritate</small><strong>94,2</strong><span className="green">+2,1 puncte</span></div><div><small>Timp mediu decizie</small><strong>2h 14m</strong><span className="green">−18 min</span></div><div><small>Duplicate prevenite</small><strong>47</strong><span>248.730 RON</span></div><div><small>Precizie reguli</small><strong>96,8%</strong><span>eșantion verificat</span></div></div><section className="panel chart-panel"><div className="panel-head"><div><h2>Evoluția integrității</h2><p>Scor zilnic și volum de abateri</p></div><StatusPill tone="success">Tendință pozitivă</StatusPill></div><div className="bar-chart">{[58, 66, 61, 74, 69, 83, 78, 86, 82, 91, 88, 94].map((height, index) => <div key={index}><span style={{ height: `${height}%` }} /><small>{index + 18} iul.</small></div>)}</div></section></>; }
 

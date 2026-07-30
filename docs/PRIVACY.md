@@ -1,6 +1,6 @@
 # Privacy și protecția datelor
 
-Acest document descrie principiile de privacy pentru Factura Integrity și diferențiază capabilitățile demo de cerințele unei implementări reale. Nu reprezintă consultanță juridică; operatorul trebuie să confirme obligațiile aplicabile împreună cu responsabilul cu protecția datelor și consilierii săi.
+Acest document descrie principiile de privacy pentru Veylora Invoice Intelligence și diferențiază capabilitățile demo de cerințele unei implementări reale. Nu reprezintă consultanță juridică; operatorul trebuie să confirme obligațiile aplicabile împreună cu responsabilul cu protecția datelor și consilierii săi.
 
 ## Starea versiunii demonstrative
 

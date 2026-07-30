@@ -1,6 +1,6 @@
 # Guvernanța AI și a deciziilor automate
 
-Factura Integrity este concepută ca un sistem de **asistență a deciziei**, nu ca autoritate autonomă pentru aprobarea, respingerea, contabilizarea sau plata unei facturi. În versiunea demonstrativă, rezultatele sunt generate de reguli deterministe și date preconfigurate. Nu este livrat un model ML antrenat.
+Veylora Invoice Intelligence este concepută ca un sistem de **asistență a deciziei**, nu ca autoritate autonomă pentru aprobarea, respingerea, contabilizarea sau plata unei facturi. În versiunea demonstrativă, rezultatele sunt generate de reguli deterministe și date preconfigurate. Nu este livrat un model ML antrenat.
 
 ## Principii
 

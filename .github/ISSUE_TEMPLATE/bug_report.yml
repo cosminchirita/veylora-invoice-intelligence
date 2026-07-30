@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping improve Factura Integrity. Do not include invoices, personal data, credentials, access tokens, or other confidential information. Security vulnerabilities must be reported according to `SECURITY.md`, not through a public issue.
+        Thank you for helping improve Veylora Invoice Intelligence. Do not include invoices, personal data, credentials, access tokens, or other confidential information. Security vulnerabilities must be reported according to `SECURITY.md`, not through a public issue.
 
   - type: checkboxes
     id: preflight

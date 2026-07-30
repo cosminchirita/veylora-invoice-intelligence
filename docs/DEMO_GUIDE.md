@@ -1,6 +1,6 @@
 # Ghid de demonstrație
 
-Acest ghid prezintă un scenariu de 5–7 minute pentru **Factura Integrity**, destinat unui potențial client, partener tehnic sau evaluator. Versiunea curentă este un demo funcțional cu date fictive: nu transmite documente către ANAF, nu citește un ERP și nu inițiază plăți bancare.
+Acest ghid prezintă un scenariu de 5–7 minute pentru **Veylora Invoice Intelligence**, destinat unui potențial client, partener tehnic sau evaluator. Versiunea curentă este un demo funcțional cu date fictive: nu transmite documente către ANAF, nu citește un ERP și nu inițiază plăți bancare.
 
 ## Obiectivul demonstrației
 
@@ -24,7 +24,7 @@ Acest ghid prezintă un scenariu de 5–7 minute pentru **Factura Integrity**, d
 
 Deschide **Prezentare generală** și explică pe scurt problema:
 
-> Echipele financiare verifică aceleași informații în SPV, ERP și extrasul bancar. Factura Integrity grupează semnalele, prioritizează impactul financiar și păstrează o urmă a deciziilor.
+> Echipele financiare verifică aceleași informații în SPV, ERP și extrasul bancar. Veylora Invoice Intelligence grupează semnalele, prioritizează impactul financiar și păstrează o urmă a deciziilor.
 
 Indică fără a citi toate valorile:
 
@@ -96,7 +96,7 @@ Deschide apoi **Integrări** pentru a arăta direcțiile ANAF/SPV, ERP și banc�
 
 Încheie cu rezultatul de business:
 
-> Factura Integrity reduce timpul de triere, explică de ce o factură a fost semnalată și păstrează decizia auditabilă. Următorul pas este un pilot izolat, cu date minimizate și conectori read-only pentru sistemele clientului.
+> Veylora Invoice Intelligence reduce timpul de triere, explică de ce o factură a fost semnalată și păstrează decizia auditabilă. Următorul pas este un pilot izolat, cu date minimizate și conectori read-only pentru sistemele clientului.
 
 ## Întrebări frecvente
 

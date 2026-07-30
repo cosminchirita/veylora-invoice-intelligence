@@ -6,7 +6,7 @@ import "./globals.css";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const title = "Factura Integrity — Control și reconciliere e-Factura";
+const title = "Veylora Invoice Intelligence — Control și reconciliere e-Factura";
 const description = "Platformă pentru integritatea facturilor, reconciliere explicabilă și auditabilitate e-Factura.";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(origin), title, description,
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-    openGraph: { title, description, type: "website", locale: "ro_RO", images: [{ url: image, width: 1200, height: 630, alt: "Factura Integrity" }] },
+    openGraph: { title, description, type: "website", locale: "ro_RO", images: [{ url: image, width: 1200, height: 630, alt: "Veylora Invoice Intelligence" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }

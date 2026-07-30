@@ -1,8 +1,8 @@
-# Factura Integrity Architecture
+# Veylora Invoice Intelligence Architecture
 
 ## Purpose and trust boundary
 
-Factura Integrity is a client-facing demonstration of an invoice integrity and e-Invoicing reconciliation platform. It explains how supplier invoices can be normalized, matched against ERP and payment records, prioritized for human review, and recorded in an auditable workflow.
+Veylora Invoice Intelligence is a client-facing demonstration of an invoice integrity and e-Invoicing reconciliation platform. It explains how supplier invoices can be normalized, matched against ERP and payment records, prioritized for human review, and recorded in an auditable workflow.
 
 This repository is a **functional demo, not a production financial system**. The current application uses in-memory sample data and performs interactions in the browser. It does not connect to ANAF/SPV, an ERP, a bank, an identity provider, or durable storage. No real or confidential documents should be uploaded to the hosted demo.
 
